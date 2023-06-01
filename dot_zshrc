@@ -1,0 +1,60 @@
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _complete _ignored _correct _approximate
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '' 'r:|[._-]=** r:|=**'
+zstyle :compinstall filename '/mnt/storage/home/code/.zshrc'
+
+# autoload -Uz compinit
+# compinit
+# End of lines added by compinstall
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.zhistory
+HISTSIZE=1000000
+SAVEHIST=100000000
+setopt autocd beep extendedglob nomatch notify
+bindkey -e
+# End of lines configured by zsh-newuser-install
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "OA" history-beginning-search-backward-end
+bindkey "OB" history-beginning-search-forward-end
+autoload -U select-word-style
+select-word-style bash
+
+source <(/usr/local/bin/starship init zsh --print-full-init)
+
+alias ls=exa
+alias cat=bat
+function tmux-here() {
+    tmux new -A -s "$(basename "$(pwd)")"
+}
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# SDKS ------------------------------------------------------------------------
+if [[ -d "$HOME/.rbenv" ]]; then
+    eval "$($HOME/.rbenv/bin/rbenv init - zsh)"
+fi
+if [[ -d "$HOME/.cargo" ]]; then
+    source "$HOME/.cargo/env"
+fi
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# pnpm
+export PNPM_HOME="/mnt/storage/home/code/.local/share/pnpm"
+if [[ -d "$PNPM_HOME" ]]; then
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+fi
+
+export SDKMAN_DIR="$HOME/.sdkman"
+if [[ -d "$SDKMAN_DIR" ]]; then
+    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+fi
+# -----------------------------------------------------------------------------
