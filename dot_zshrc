@@ -27,7 +27,8 @@ source <(/usr/local/bin/starship init zsh --print-full-init)
 alias ls=exa
 alias cat=bat
 function tmux-here() {
-    tmux new -A -s "$(basename "$(pwd)")"
+    local AT="${1:-"$(pwd)"}"
+    tmux new -A -s "$(basename "$AT")"
 }
 
 export PATH="$HOME/.local/bin:$PATH"
