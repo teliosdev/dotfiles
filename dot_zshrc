@@ -13,7 +13,6 @@ HISTSIZE=1000000
 SAVEHIST=100000000
 setopt autocd beep extendedglob nomatch notify
 bindkey -e
-# End of lines configured by zsh-newuser-install
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -22,10 +21,11 @@ bindkey "OB" history-beginning-search-forward-end
 autoload -U select-word-style
 select-word-style bash
 
-source <(/usr/local/bin/starship init zsh --print-full-init)
+STARSHIP="$(which starship)"
+[[ -e "$STARSHIP" ]] && source <("$STARSHIP" init zsh --print-full-init)
 
-alias ls=exa
-alias cat=bat
+command -v exa >/dev/null && alias ls=exa
+command -v bat >/dev/null && alias cat=bat
 function tmux-here() {
     local AT="${1:-"$(pwd)"}"
     tmux new -A -s "$(basename "$AT")"
@@ -35,18 +35,23 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # SDKS ------------------------------------------------------------------------
 if [[ -d "$HOME/.rbenv" ]]; then
+    RBENV="$(command -v rbenv)"
+    [[ -f "$RBENV" ]] || RBENV="$HOME/.rbenv/bin/rbenv"
     eval "$($HOME/.rbenv/bin/rbenv init - zsh)"
 fi
 if [[ -d "$HOME/.cargo" ]]; then
     source "$HOME/.cargo/env"
 fi
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+if command -v fnm >/dev/null; then
+  eval "$(fnm env --use-on-cd)"
+else
+  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+fi
 
 # pnpm
-export PNPM_HOME="/mnt/storage/home/code/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 if [[ -d "$PNPM_HOME" ]]; then
     case ":$PATH:" in
       *":$PNPM_HOME:"*) ;;
@@ -59,3 +64,6 @@ if [[ -d "$SDKMAN_DIR" ]]; then
     [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
 # -----------------------------------------------------------------------------
+
+[[ -f "$HOME/.zshrc.local" ]] && . "$HOME/.zshrc.local"
+
