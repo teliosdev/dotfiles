@@ -12,6 +12,7 @@ set laststatus=2
 set autowrite
 set modelines=0
 set nomodeline
+set mouse=a
 
 syntax on
 
