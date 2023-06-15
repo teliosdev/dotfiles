@@ -32,6 +32,19 @@ bindkey "${key[Down]}" history-beginning-search-forward-end
 autoload -U select-word-style
 select-word-style bash
 
+if echoti smkx >/dev/null; then
+  function zle-line-init() {
+    echoti smkx
+  }
+
+  function zle-line-finish() {
+    echoti rmkx
+  }
+
+  zle -N zle-line-init
+  zle -N zle-line-finish
+fi
+
 STARSHIP="$(which starship)"
 [[ -e "$STARSHIP" ]] && source <("$STARSHIP" init zsh --print-full-init)
 
