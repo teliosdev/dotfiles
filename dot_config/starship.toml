@@ -1,4 +1,6 @@
-format = """
+format = """$character"""
+
+right_format = """
 $username\
 $hostname\
 $directory\
@@ -6,9 +8,7 @@ $git_branch\
 $git_state\
 $git_status\
 $cmd_duration\
-$rust\
-$line_break\
-$character"""
+$rust"""
 
 [hostname]
 ssh_symbol = "@"

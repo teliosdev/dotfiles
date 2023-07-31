@@ -37,6 +37,11 @@ if [[ "$OS" == "Linux" && ( "$DIST" == "Debian" || "$DIST" == "Ubuntu" ) ]]; the
   _run sudo apt update
   _run sudo apt upgrade -y
   _run sudo apt install -y build-essential git
+elif [[ "$OS" == "Linux" && "$DIST" == "fedora" ]]; then
+  _run sudo dnf update
+  _run sudo dnf upgrade -y
+  _run sudo dnf groupinstall -y "Development Tools"
+  _run sudo dnf install -y cmake
 fi
 
 # INSTALL HOMEBREW ------------------------------------------------------------
@@ -62,8 +67,9 @@ fi
 # INSTALL RUSTUP --------------------------------------------------------------
 
 if ! command -v rustup >/dev/null; then
-  _run curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- \
+  _run curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
     --no-modify-path --default-toolchain stable -y
+  source "$HOME/.cargo/env"
 else
   _alreadyInstalled "rustup"
 fi
@@ -74,7 +80,8 @@ if ! command -v starship >/dev/null; then
   if [[ -n "$HAS_BREW" ]]; then
     _run brew install starship
   else
-    _run cargo install --locked starship
+    curl -sS https://starship.rs/install.sh | sh
+    #_run cargo install --locked starship
   fi
 fi
 
@@ -118,9 +125,12 @@ if ! command -v bat >/dev/null; then
       _run mkdir -p ~/.local/bin
       _run ln -s /usr/bin/batcat ~/.local/bin/bat
     fi
+  elif [[ "$OS" == "Linux" && "$DIST" == "fedora" ]]; then
+    _run sudo dnf install -y bat
   else
     _run cargo install --locked bat
   fi
 else
   _alreadyInstalled "bat"
 fi
+
