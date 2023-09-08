@@ -104,16 +104,16 @@ if ! command -v fnm >/dev/null; then
   fi
 fi
 
-# INSTALL exa/bat -------------------------------------------------------------
+# INSTALL eza/bat -------------------------------------------------------------
 
-if ! command -v exa >/dev/null; then
+if ! command -v eza >/dev/null; then
   if [[ -n "$HAS_BREW" ]]; then
-    _run brew install exa
+    _run brew install eza
   else
-    _run cargo install exa
+    _run cargo install eza
   fi
 else
-  _alreadyInstalled "exa"
+  _alreadyInstalled "eza"
 fi
 
 if ! command -v bat >/dev/null; then

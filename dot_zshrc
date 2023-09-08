@@ -48,7 +48,7 @@ fi
 STARSHIP="$(which starship)"
 [[ -e "$STARSHIP" ]] && source <("$STARSHIP" init zsh --print-full-init)
 
-command -v exa >/dev/null && alias ls=exa
+command -v eza >/dev/null && alias ls=eza
 command -v bat >/dev/null && alias cat=bat
 function tmux-here() {
     local AT="${1:-"$(pwd)"}"
