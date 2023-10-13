@@ -14,14 +14,16 @@ $rust"""
 ssh_symbol = "@"
 ssh_only = false
 trim_at = ""
-style = "cyan"
+style = "#9A348E"
 format = "[$ssh_symbol$hostname]($style):"
 
 [username]
+style_user = "bold #9A348E"
+style_root = "bold #9A348E"
 format = "[$user]($style)"
 
 [directory]
-style = "blue"
+style = "#DA627D"
 
 [character]
 success_symbol = "[❯](purple)"
@@ -30,11 +32,11 @@ vimcmd_symbol = "[❮](green)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bright-black"
+style = "#FCA17D"
 
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
-style = "cyan"
+style = "#FCA17D"
 conflicted = "​"
 untracked = "​"
 modified = "​"
@@ -45,11 +47,11 @@ stashed = "≡"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
+style = "#FCA17D"
 
 [cmd_duration]
 format = " [$duration]($style)"
-style = "yellow"
+style = "#33658A"
 
 #[python]
 #format = "[$virtualenv]($style) "
@@ -57,4 +59,4 @@ style = "yellow"
 
 [rust]
 format = " [$toolchain]($style) "
-style = "bright-black"
+style = "#86BBD8"
