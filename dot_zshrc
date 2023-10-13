@@ -5,6 +5,10 @@ HISTFILE=~/.zhistory
 HISTSIZE=1000000
 SAVEHIST=100000000
 setopt autocd beep extendedglob nomatch notify
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt EXTENDED_HISTORY
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
 
 # -----------------------------------------------------------------------------
 typeset -g -A key
@@ -24,9 +28,16 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 # -----------------------------------------------------------------------------
 
 bindkey -e
-autoload -U history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
+autoload -U compinit
+compinit
+
+autoload -Uz history-search-end
+
+zle -N history-beginning-search-backward-end \
+                history-search-end
+zle -N history-beginning-search-forward-end \
+                history-search-end
+
 bindkey "${key[Up]}" history-beginning-search-backward-end
 bindkey "${key[Down]}" history-beginning-search-forward-end
 autoload -U select-word-style
@@ -72,10 +83,6 @@ if command -v fnm >/dev/null; then
 else
   export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-fi
-
-if command -v fnm >/dev/null; then
-    source <(fnm env)
 fi
 
 # pnpm
