@@ -100,4 +100,8 @@ if [[ -d "$SDKMAN_DIR" ]]; then
 fi
 # -----------------------------------------------------------------------------
 
+r () {
+    cd "$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
+}
+
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
