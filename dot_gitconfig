@@ -1,6 +1,7 @@
 [user]
 	email = me@telios.dev
 	name = Jeremy Rodi
+	signingKey = key::sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBNCcX8i1xdzMPiPsorGZA7Xce6Wc13WTQl8OpLaGzjrAAAABHNzaDo= iso@telios.dev
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -20,3 +21,9 @@
 	autosquash = true
 [commit]
 	template = ~/.config/git/gitmessage
+	gpgsign = true
+[gpg]
+  format = ssh
+
+[credentials]
+	helper = cache --timeout=3600
