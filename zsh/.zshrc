@@ -28,8 +28,8 @@ r() {
     cd "$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
 }
 
-if ! command -v docker; then
-    if command -v podman; then
+if ! command -v docker >/dev/null; then
+    if command -v podman >/dev/null; then
         alias docker=podman
     fi
 fi
