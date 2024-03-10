@@ -107,9 +107,14 @@ if ! command -v rustup >/dev/null; then
   _run curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- \
     --no-modify-path --default-toolchain stable -y
   source "$HOME/.cargo/env"
-  _runRemote  "https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh"
 else
   _alreadyInstalled "rustup"
+fi
+
+if ! command -v cargo-binstall >/dev/null; then
+  _runRemote  "https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh"
+else
+  _alreadyInstalled "cargo-binstall"
 fi
 
 # INSTALL vim-plug ------------------------------------------------------------
