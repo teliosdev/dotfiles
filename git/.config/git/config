@@ -1,0 +1,33 @@
+[user]
+	email = me@telios.dev
+	name = Jeremy Rodi
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[core]
+	editor = vim --nofork
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[merge]
+	ff = only
+	conflictstyle = zdiff3
+[pull]
+	ff = only
+[fetch]
+	prune = true
+[rebase]
+	autosquash = true
+[diff]
+	algorithm = histogram
+[commit]
+	template = ~/.config/git/message
+[gpg]
+  format = ssh
+[credentials]
+	helper = cache --timeout=3600
+[include]
+	path = ~/.config/git/config.local
