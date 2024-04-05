@@ -173,8 +173,28 @@ fi
 # INSTALL oh-my-zsh -----------------------------------------------------------
 
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-    _runRemote "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" --unattended
-    rm -rf "$HOME/.zshrc"
+  _runRemote "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" --unattended
+  rm -rf "$HOME/.zshrc"
+fi
+
+# INSTALL hivemind/overmind ---------------------------------------------------
+
+if [[ ! -f "$HOME/.local/bin/hivemind" ]]; then
+  _run wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-amd64.gz" \
+    -O "$HOME/.local/bin/hivemind.gz"
+  _run gunzip "$HOME/.local/bin/hivemind.gz"
+  _run chmod +x "$HOME/.local/bin/hivemind"
+else
+  _alreadyInstalled "hivemind"
+fi
+
+if [[ ! -f "$HOME/.local/bin/overmind" ]]; then
+  _run wget "https://github.com/DarthSim/overmind/releases/download/v2.5.1/overmind-v2.5.1-linux-amd64.gz" \
+    -O "$HOME/.local/bin/overmind.gz"
+  _run gunzip "$HOME/.local/bin/overmind.gz"
+  _run chmod +x "$HOME/.local/bin/overmind"
+else
+  _alreadyInstalled "overmind"
 fi
 
 ###############################################################################
@@ -195,12 +215,15 @@ fi
 # invocation, which sets the 'stow directory' to `../`.
 
 _stow() {
-    _run stow -d "$DIR" "$@"
+  _run stow --adopt -d "$DIR" "$@"
+  _run git -C "$DIR" restore .
 }
 
 # PACKAGES --------------------------------------------------------------------
 
+_run git stash push --all
 _stow zsh
 _stow git
 _stow tmux
 _stow vim
+_run git stash pop -q
