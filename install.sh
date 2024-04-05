@@ -221,9 +221,9 @@ _stow() {
 
 # PACKAGES --------------------------------------------------------------------
 
-_run git stash push --all
+_run git -C "$DIR" stash push --all
 _stow zsh
 _stow git
 _stow tmux
 _stow vim
-_run git stash pop -q
+_run git -C "$DIR" stash pop -q
