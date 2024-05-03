@@ -148,6 +148,33 @@ else
   _alreadyInstalled "eza"
 fi
 
+# INSTALL mold ----------------------------------------------------------------
+
+function _rustUseMold() {
+  _run echo <<-MOLD > "$HOME/.cargo/config.toml"
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=$(which mold)"]
+MOLD
+}
+
+if ! command -v mold >/dev/null; then
+  if [[ -n "$HAS_BREW" ]]; then
+    _run brew install mold
+    _rustUseMold
+  elif [[ "$OS" == "Linux" && ( "$DIST" == "debian" || "$DIST" == "ubuntu") ]]; then
+    _run apt install -y mold
+    _rustUseMold
+  elif [[ "$OS" == "Linux" && "$DIST" == "fedora" ]]; then
+    _run dnf install -y mold
+    _rustUseMold
+  else
+    _log "NOTE: unable to install mold; unknown distribution"
+  fi
+else
+  _alreadyInstalled "mold"
+fi
+
 # Bat can be installed from the OS's package managers because pretty much all
 # of them are up-to-date.  However, for Debian/Ubuntu, there is a problem -
 # Debian/Ubuntu install them as `batcat`, instead of just `bat`, so we have to
