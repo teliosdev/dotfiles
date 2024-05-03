@@ -151,7 +151,8 @@ fi
 # INSTALL mold ----------------------------------------------------------------
 
 function _rustUseMold() {
-  _run echo <<-MOLD > "$HOME/.cargo/config.toml"
+  _run mkdir -p "$HOME/.cargo"
+  _run cat <<MOLD > "$HOME/.cargo/config.toml"
 [target.x86_64-unknown-linux-gnu]
 linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=$(which mold)"]
@@ -163,10 +164,10 @@ if ! command -v mold >/dev/null; then
     _run brew install mold
     _rustUseMold
   elif [[ "$OS" == "Linux" && ( "$DIST" == "debian" || "$DIST" == "ubuntu") ]]; then
-    _run apt install -y mold
+    _run sudo apt install -y mold
     _rustUseMold
   elif [[ "$OS" == "Linux" && "$DIST" == "fedora" ]]; then
-    _run dnf install -y mold
+    _run sudo dnf install -y mold
     _rustUseMold
   else
     _log "NOTE: unable to install mold; unknown distribution"
