@@ -97,6 +97,8 @@ else
   fi
 fi
 
+mkdir -p "$HOME/.local/bin"
+
 # We'll install what we can through homebrew, as homebrew allows for automatic
 # updates of installed packages, without having to compile them.  Homebrew
 # often also includes the latest versions of the package...
@@ -208,20 +210,41 @@ fi
 # INSTALL hivemind/overmind ---------------------------------------------------
 
 if [[ ! -f "$HOME/.local/bin/hivemind" ]]; then
-  _run wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-amd64.gz" \
-    -O "$HOME/.local/bin/hivemind.gz"
-  _run gunzip "$HOME/.local/bin/hivemind.gz"
-  _run chmod +x "$HOME/.local/bin/hivemind"
+  _unpackHivemind() {
+    _run gunzip "$HOME/.local/bin/hivemind.gz"
+    _run chmod +x "$HOME/.local/bin/hivemind"
+  }
+  if [[ "$OS" == "Linux" ]]; then
+    _run wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-linux-amd64.gz" \
+      -O "$HOME/.local/bin/hivemind.gz"
+    _unpackHivemind
+  elif [[ "$OS" == "Darwin" ]]; then
+    _run wget "https://github.com/DarthSim/hivemind/releases/download/v1.1.0/hivemind-v1.1.0-macos-arm64.gz" \
+      -O "$HOME/.local/bin/hivemind.gz"
+    _unpackHivemind
+  else
+    _log "WARN: unknown operating system $OS, can't install hivemind"
+  fi
 else
   _alreadyInstalled "hivemind"
 fi
 
 if [[ ! -f "$HOME/.local/bin/overmind" ]]; then
-  _run wget "https://github.com/DarthSim/overmind/releases/download/v2.5.1/overmind-v2.5.1-linux-amd64.gz" \
-    -O "$HOME/.local/bin/overmind.gz"
-  _run gunzip "$HOME/.local/bin/overmind.gz"
-  _run chmod +x "$HOME/.local/bin/overmind"
-else
+  _unpackOvermind() {
+     _run gunzip "$HOME/.local/bin/overmind.gz"
+     _run chmod +x "$HOME/.local/bin/overmind"
+  }
+  if [[ "$OS" == "Linux" ]]; then
+    _run wget "https://github.com/DarthSim/overmind/releases/download/v2.5.1/overmind-v2.5.1-linux-amd64.gz" \
+      -O "$HOME/.local/bin/overmind.gz"
+    _unpackOvermind
+  elif [[ "$OS" == "Darwin" ]]; then
+    _run wget "https://github.com/DarthSim/overmind/releases/download/v2.5.1/overmind-v2.5.1-macos-arm64.gz" \
+      -O "$HOME/.local/bin/overmind.gz"
+    _unpackOvermind
+  else
+    _log "WARN: unknown operating system $OS, can't install overmind"
+  fi
   _alreadyInstalled "overmind"
 fi
 
@@ -254,4 +277,5 @@ _stow zsh
 _stow git
 _stow tmux
 _stow vim
+_stow fish
 _run git -C "$DIR" stash pop -q

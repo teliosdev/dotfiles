@@ -89,3 +89,10 @@ fi
 # specific configurations in a supplementary file.
 
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# bun completions
+[ -s "/Users/telios/.bun/_bun" ] && source "/Users/telios/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
